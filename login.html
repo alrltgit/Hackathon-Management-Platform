@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Login</h2>
+<input id="email" type="text" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button id="loginBtn" onclick="login()">Login</button>
+<button id="logoutBtn" onclick="logout()" style="display:none">Logout</button>
+
+<h2>Actions Panel</h2>
+<div id="actions" style="display:none">
+  <button id="participantBtn" onclick="getParticipantPanel()" style="display:none">Participant Panel</button>
+  <button id="judgeBtn" onclick="getJudgePanel()" style="display:none">Judge Panel</button>
+  <button id="adminBtn" onclick="getAdminPanel()" style="display:none">Admin Panel</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

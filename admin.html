@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Admin Panel</h2>
+<button onclick="logout()">Logout</button>
+
+<h3>Users List</h3>
+<div id="usersList"></div>
+
+<h3>Assign / Remove Role</h3>
+<input id="userId" type="number" placeholder="User ID">
+<input id="roleName" type="text" placeholder="Role (participant/admin/judge)">
+<button onclick="assignRole()">Assign Role</button>
+<button onclick="removeRole()">Remove Role</button>
+
+<script src="admin.js"></script>
+</body>
+</html>
