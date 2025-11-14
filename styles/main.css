@@ -1,0 +1,132 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+}
+
+.logo img {
+  width: 11rem;
+  height: 9rem;
+}
+
+.nav-bar {
+  display: flex;
+  justify-content: center;
+  gap: 6rem;
+
+  margin-block-start: 4rem;
+  margin-block-end: 4rem;
+}
+
+.nav-bar a {
+  padding: 0.625rem;
+  background-color: #eee;
+  border-radius: 1.5rem;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+
+  margin-block-end: 5rem;
+}
+
+.main-container h1 {
+  color: #333;
+  font-size: 4rem;
+  margin-block-end: 4rem;
+  margin-block-start: 4rem;
+}
+
+.main-container .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 25rem;
+  margin-block-end: 4rem;
+  background-color: #ebeff0;
+  border-radius: 0.5rem;
+  padding-inline: 14rem;
+}
+
+.main-container .card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url(./assets/chilli-9202873_1280.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(8px);
+  transform: scale(1.1); /* Prevent blur from cutting at edges */
+  z-index: 0; /* Behind the content */
+}
+
+.main-container .card > * {
+  position: relative;
+  z-index: 1;
+}
+.card h2 {
+  font-size: 2.5rem;
+  margin-block-end: 4rem;
+  color: #fff;
+}
+
+.buttons {
+  display: flex;
+  gap: 2rem;
+  margin-block-end: 2rem;
+}
+
+.buttons a {
+  background-color: #eee;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.buttons a:hover {
+  background-color: #a9adae;
+  color: #fff;
+}
+
+.footer {
+  background-color: #595c5d;
+}
+
+.footer-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10rem;
+  padding: 3rem;
+}
+
+.footer-menu a {
+  color: #fff;
+}

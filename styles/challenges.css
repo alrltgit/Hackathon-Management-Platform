@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+}
+
+.logo img {
+  width: 11rem;
+  height: 9rem;
+}
+
+.nav-bar {
+  display: flex;
+  justify-content: center;
+  gap: 6rem;
+
+  margin-block-start: 4rem;
+  margin-block-end: 4rem;
+}
+
+.nav-bar a {
+  padding: 0.625rem;
+  background-color: #eee;
+  border-radius: 1.5rem;
+}
+
+.challenge-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.challenge-card-item {
+  max-width: 43.75rem;
+  background-color: rgb(245, 239, 239);
+  border-radius: 0.5rem;
+}
