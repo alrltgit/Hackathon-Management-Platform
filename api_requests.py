@@ -5,7 +5,7 @@ from utils import calculate_submission_date
 app = Flask(__name__)
 
 @app.route('/')
-def index():
+def render_index():
     return render_template('index.html')
 
 @app.route('/api/challenges')
@@ -22,9 +22,7 @@ def get_list_of_challenges():
         "546e2562b03326a88e000020",
         "523f5d21c841566fde000009",
     ]
-
     challenges_storage = []
-
     headers = {
         "User-Agent": "Hackathon-Management-Platform/1.0"
     }
@@ -44,8 +42,11 @@ def get_list_of_challenges():
             "submission_time": submission_time
         }
         challenges_storage.append(result)
-
     return jsonify(challenges_storage)
+
+@app.route('/list_challenges')
+def render_challenges():
+    return render_template('list_challenges.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
