@@ -1,10 +1,14 @@
 import requests
-from flask import Flask
+from flask import Flask, render_template, jsonify
 from utils import calculate_submission_date
 
 app = Flask(__name__)
 
 @app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/api/challenges')
 def get_list_of_challenges():
     id_arr = [
         "5208f99aee097e6552000148",
@@ -18,10 +22,17 @@ def get_list_of_challenges():
         "546e2562b03326a88e000020",
         "523f5d21c841566fde000009",
     ]
+
     challenges_storage = []
+
+    headers = {
+        "User-Agent": "Hackathon-Management-Platform/1.0"
+    }
+
     for id in id_arr:
         response = requests.get(
-            f"https://www.codewars.com/api/v1/code-challenges/{id}"
+            f"https://www.codewars.com/api/v1/code-challenges/{id}",
+            headers=headers
         )
         response_json = response.json()
         submission_time = calculate_submission_date()
@@ -33,7 +44,8 @@ def get_list_of_challenges():
             "submission_time": submission_time
         }
         challenges_storage.append(result)
-    return challenges_storage
+
+    return jsonify(challenges_storage)
 
 if __name__ == "__main__":
     app.run(debug=True)
