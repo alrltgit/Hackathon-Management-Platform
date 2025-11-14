@@ -1,5 +1,6 @@
 import requests
 from flask import Flask
+from utils import calculate_submission_date
 
 app = Flask(__name__)
 
@@ -23,11 +24,13 @@ def get_list_of_challenges():
             f"https://www.codewars.com/api/v1/code-challenges/{id}"
         )
         response_json = response.json()
+        submission_time = calculate_submission_date()
         result = {
             "name": response_json["name"],
             "description": response_json["description"],
             "category": response_json["category"],
-            "languages": response_json["languages"]
+            "languages": response_json["languages"],
+            "submission_time": submission_time
         }
         challenges_storage.append(result)
     return challenges_storage
