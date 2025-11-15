@@ -79,13 +79,13 @@ html {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url(./assets/chilli-9202873_1280.jpg);
+  background-image: url(../assets/chilli-9202873_1280.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   filter: blur(8px);
-  transform: scale(1.1); /* Prevent blur from cutting at edges */
-  z-index: 0; /* Behind the content */
+  transform: scale(1.1);
+  z-index: 0;
 }
 
 .main-container .card > * {
