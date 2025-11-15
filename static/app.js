@@ -1,6 +1,7 @@
 const container = document.querySelector('.cards-container');
 const loader = document.getElementById('loader');
 
+// Show/hide loader
 function showLoader() {
   loader.classList.remove('hidden');
   container.classList.add('hidden');
@@ -11,10 +12,11 @@ function hideLoader() {
   container.classList.remove('hidden');
 }
 
+// Fetch challenges from API
 async function loadChallenges() {
   showLoader();
 
-  const start = Date.now(); // for minimum display time
+  const start = Date.now(); // minimum loader display time
 
   try {
     const response = await fetch('/api/challenges');
@@ -27,10 +29,9 @@ async function loadChallenges() {
     container.innerHTML = '<p>Failed to load challenges.</p>';
   }
 
-  // Make loader visible at least 300ms
+  // Minimum loader display time
   const elapsed = Date.now() - start;
   const minDuration = 300;
-
   if (elapsed < minDuration) {
     setTimeout(hideLoader, minDuration - elapsed);
   } else {
@@ -38,13 +39,25 @@ async function loadChallenges() {
   }
 }
 
+// Render all cards
 function renderCards(challenges) {
   container.innerHTML = '';
 
   challenges.forEach((challenge, index) => {
-    const fullText = challenge.description;
-    const shortText =
-      fullText.length > 150 ? fullText.slice(0, 150) + '...' : fullText;
+    const fullText = challenge.description || '';
+    const cutoff = 150;
+
+    // Short text without cutting mid-word
+    let shortText =
+      fullText.length > cutoff
+        ? fullText.slice(0, cutoff).replace(/\s+\S*$/, '') + '...'
+        : fullText;
+
+    // Escape quotes for data attributes
+    const escapedFull = fullText.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    const escapedShort = shortText
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
 
     const card = document.createElement('div');
     card.classList.add('challenge-card');
@@ -56,13 +69,13 @@ function renderCards(challenges) {
 
         <p class="challenge-description"
            id="desc-${index}"
-           data-full="${fullText}"
-           data-short="${shortText}">
+           data-full="${escapedFull}"
+           data-short="${escapedShort}">
             ${shortText}
         </p>
 
         ${
-          fullText.length > 150
+          fullText.length > cutoff
             ? `<a href="#" class="see-more" data-index="${index}">See more</a>`
             : ''
         }
@@ -90,6 +103,7 @@ function renderCards(challenges) {
   attachSeeMoreHandlers();
 }
 
+// Handle See more / See less toggling
 function attachSeeMoreHandlers() {
   document.querySelectorAll('.see-more').forEach((link) => {
     link.addEventListener('click', (e) => {
@@ -97,26 +111,24 @@ function attachSeeMoreHandlers() {
 
       const index = link.dataset.index;
       const desc = document.getElementById(`desc-${index}`);
+      if (!desc) return;
 
       const full = desc.dataset.full;
       const short = desc.dataset.short;
       const isExpanded = desc.classList.contains('expanded');
 
-      desc.classList.add('collapsing');
-
       if (!isExpanded) {
-        desc.textContent = full;
+        desc.textContent = full; // safely show full text
         desc.classList.add('expanded');
         link.textContent = 'See less';
       } else {
-        desc.textContent = short;
+        desc.textContent = short; // safely collapse to short text
         desc.classList.remove('expanded');
         link.textContent = 'See more';
       }
-
-      setTimeout(() => desc.classList.remove('collapsing'), 150);
     });
   });
 }
 
+// Load challenges when page loads
 loadChallenges();
