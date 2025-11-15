@@ -47,24 +47,68 @@ def get_conn():
 
 
 def init_db():
-    os.makedirs(UPLOAD_ROOT, exist_ok=True)
+    conn = sqlite3.connect('submissions.db')
+    c = conn.cursor()
 
-    conn = get_conn()
-    cur = conn.cursor()
-    cur.execute(
-        """
-        CREATE TABLE IF NOT EXISTS submissions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id TEXT,
-            challenge_id TEXT NOT NULL,
-            file_path TEXT NOT NULL,
-            original_filename TEXT NOT NULL,
-            status TEXT NOT NULL,
-            error_message TEXT,
-            created_at TEXT NOT NULL
-        )
-        """
-    )
+    # --- USERS ---
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        created_at TEXT NOT NULL
+    );
+    """)
+
+    # --- ROLES ---
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS roles (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT UNIQUE NOT NULL
+    );
+    """)
+
+    # --- USER_ROLES ---
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS user_roles (
+        user_id INTEGER NOT NULL,
+        role_id INTEGER NOT NULL,
+        PRIMARY KEY (user_id, role_id),
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (role_id) REFERENCES roles(id)
+    );
+    """)
+
+    # --- SUBMISSIONS (twój obecny, poprawiony na spójny) ---
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS submissions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        challenge_id TEXT NOT NULL,
+        file_path TEXT NOT NULL,
+        original_filename TEXT NOT NULL,
+        status TEXT NOT NULL,
+        error_message TEXT,
+        created_at TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+    """)
+
+    # --- GRADES ---
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS grades (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        submission_id INTEGER NOT NULL,
+        judge_id INTEGER NOT NULL,
+        score INTEGER NOT NULL,
+        feedback TEXT,
+        created_at TEXT NOT NULL,
+        FOREIGN KEY (submission_id) REFERENCES submissions(id),
+        FOREIGN KEY (judge_id) REFERENCES users(id)
+    );
+    """)
+
     conn.commit()
     conn.close()
 
