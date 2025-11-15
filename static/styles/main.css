@@ -45,7 +45,7 @@ html {
   border-radius: 1.5rem;
 }
 
-/* Button in header */
+
 .nav-btn {
   background-color: #a9adae;
   color: #fff;
@@ -57,10 +57,10 @@ html {
   font-size: 1rem;
 }
 
-/* Login card styling */
+
 .login-card {
   position: absolute;
-  top: 60px; /* adjust based on header height */
+  top: 60px; 
   right: 20px;
   width: 300px;
   background-color: #fff;
@@ -73,18 +73,18 @@ html {
   transform: translateY(-20px);
 }
 
-/* Show the card */
+
 .login-card.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Hide with class hidden */
+
 .login-card.hidden {
   display: none;
 }
 
-/* Inputs */
+
 .login-card input {
   width: 100%;
   padding: 0.4rem;
@@ -93,7 +93,7 @@ html {
   border-radius: 0.3rem;
 }
 
-/* Submit button */
+
 .login-submit {
   width: 100%;
   padding: 0.5rem;
@@ -104,7 +104,7 @@ html {
   cursor: pointer;
 }
 
-/* Error message */
+
 .login-error {
   color: red;
   font-size: 0.9rem;

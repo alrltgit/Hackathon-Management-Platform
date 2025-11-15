@@ -180,6 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('challenge-btn')) {
+      e.preventDefault();
+      window.location.href = '/upload';
+    }
+  });
+
   // ---------- Initial load ----------
   loadChallenges();
 });

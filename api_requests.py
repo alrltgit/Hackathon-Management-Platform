@@ -8,6 +8,10 @@ app = Flask(__name__)
 def render_index():
     return render_template('index.html')
 
+@app.route('/upload')
+def upload():
+    return render_template('upload.html')
+
 @app.route('/api/challenges')
 def get_list_of_challenges():
     id_arr = [
