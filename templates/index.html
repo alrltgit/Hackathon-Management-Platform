@@ -23,7 +23,7 @@
       <nav>
         <ul class="nav-bar">
           <li>
-            <a href="./index.html">Home</a>
+            <a href="{{ url_for('render_index') }}">Home</a>
           </li>
           <li>
             <a href="">Search for a challenge</a>
@@ -46,7 +46,7 @@
         <div class="card">
           <h2>Showcase your skills</h2>
           <div class="buttons">
-            <a href="./list_challenges.html">List of challenges</a>
+            <a href="{{ url_for('render_challenges') }}">List of challenges</a>
             <a href="">Hackathon requirements</a>
           </div>
         </div>

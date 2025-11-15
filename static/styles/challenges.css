@@ -18,6 +18,25 @@ html {
   font-family: 'Roboto', sans-serif;
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -44,6 +63,33 @@ html {
   border-radius: 1.5rem;
 }
 
+.loader {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #ddd;
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 2rem auto;
+  display: block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .challenge-card {
   display: flex;
   flex-direction: column;
@@ -52,6 +98,70 @@ html {
 
 .challenge-card-item {
   max-width: 43.75rem;
-  background-color: rgb(245, 239, 239);
+  background-color: #eee;
   border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.challenge-card-item h3,
+p {
+  margin-block-end: 1rem;
+}
+
+.challenge-submission-time {
+  margin-bottom: 1.5rem; /* adds space below submission time before the button */
+}
+
+.challenge-btn {
+  padding: 1rem;
+  margin-block-start: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #2fb3ac;
+  color: #fff;
+  border: none;
+}
+
+.see-more {
+  color: #2fb3ac;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.challenge-description {
+  margin-bottom: 0.25rem;
+}
+
+.challenge-description {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+  max-height: 4.5rem;
+  opacity: 1;
+}
+
+.challenge-description.expanded {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.challenge-description.collapsing {
+  opacity: 0.5;
+}
+
+.footer {
+  background-color: #595c5d;
+  margin-block-start: 2rem;
+}
+
+.footer-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10rem;
+  padding: 3rem;
+}
+
+.footer-menu a {
+  color: #fff;
 }

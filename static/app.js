@@ -1,48 +1,122 @@
-// Select the container where cards will go
 const container = document.querySelector('.cards-container');
+const loader = document.getElementById('loader');
 
-// Fetch data from your Flask API
+function showLoader() {
+  loader.classList.remove('hidden');
+  container.classList.add('hidden');
+}
+
+function hideLoader() {
+  loader.classList.add('hidden');
+  container.classList.remove('hidden');
+}
+
 async function loadChallenges() {
+  showLoader();
+
+  const start = Date.now(); // for minimum display time
+
   try {
     const response = await fetch('/api/challenges');
-    if (!response.ok) throw new Error('Network response was not ok');
+    if (!response.ok) throw new Error('Network error');
 
     const challenges = await response.json();
     renderCards(challenges);
   } catch (error) {
-    console.error('Error fetching challenges:', error);
+    console.error(error);
     container.innerHTML = '<p>Failed to load challenges.</p>';
+  }
+
+  // Make loader visible at least 300ms
+  const elapsed = Date.now() - start;
+  const minDuration = 300;
+
+  if (elapsed < minDuration) {
+    setTimeout(hideLoader, minDuration - elapsed);
+  } else {
+    hideLoader();
   }
 }
 
-// Render the cards in the DOM
 function renderCards(challenges) {
-  // Clear the container first
   container.innerHTML = '';
 
-  challenges.forEach((challenge) => {
+  challenges.forEach((challenge, index) => {
+    const fullText = challenge.description;
+    const shortText =
+      fullText.length > 150 ? fullText.slice(0, 150) + '...' : fullText;
+
     const card = document.createElement('div');
     card.classList.add('challenge-card');
 
-    // Build the inner HTML of the card
     card.innerHTML = `
-      <h3 class="challenge-title">${challenge.name}</h3>
-      <p class="challenge-description">${challenge.description}</p>
-      <p class="challenge-category"><strong>Category:</strong> ${
-        challenge.category
-      }</p>
-      <p class="challenge-languages"><strong>Languages:</strong> ${challenge.languages.join(
-        ', '
-      )}</p>
-      <p class="challenge-submission-time"><strong>Submission Time:</strong> ${
-        challenge.submission_time
-      }</p>
-      <button class="challenge-btn">Start Challenge</button>
+      <div class="challenge-card-item">
+
+        <h3 class="challenge-title">${challenge.name}</h3>
+
+        <p class="challenge-description"
+           id="desc-${index}"
+           data-full="${fullText}"
+           data-short="${shortText}">
+            ${shortText}
+        </p>
+
+        ${
+          fullText.length > 150
+            ? `<a href="#" class="see-more" data-index="${index}">See more</a>`
+            : ''
+        }
+
+        <p class="challenge-category"><strong>Category:</strong> ${
+          challenge.category
+        }</p>
+
+        <p class="challenge-languages">
+          <strong>Languages:</strong> ${challenge.languages.join(', ')}
+        </p>
+
+        <p class="challenge-submission-time">
+          <strong>Submission Time:</strong> ${challenge.submission_time}
+        </p>
+
+        <a href="/some-route-or-url" class="challenge-btn">Start Challenge</a>
+
+      </div>
     `;
 
     container.appendChild(card);
   });
+
+  attachSeeMoreHandlers();
 }
 
-// Load challenges on page load
+function attachSeeMoreHandlers() {
+  document.querySelectorAll('.see-more').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const index = link.dataset.index;
+      const desc = document.getElementById(`desc-${index}`);
+
+      const full = desc.dataset.full;
+      const short = desc.dataset.short;
+      const isExpanded = desc.classList.contains('expanded');
+
+      desc.classList.add('collapsing');
+
+      if (!isExpanded) {
+        desc.textContent = full;
+        desc.classList.add('expanded');
+        link.textContent = 'See less';
+      } else {
+        desc.textContent = short;
+        desc.classList.remove('expanded');
+        link.textContent = 'See more';
+      }
+
+      setTimeout(() => desc.classList.remove('collapsing'), 150);
+    });
+  });
+}
+
 loadChallenges();

@@ -17,7 +17,7 @@
       <nav>
         <ul class="nav-bar">
           <li>
-            <a href="">Home</a>
+            <a href="{{ url_for('render_index') }}">Home</a>
           </li>
           <li>
             <a href="">Search for a challenge</a>
@@ -34,13 +34,21 @@
         </ul>
       </nav>
     </header>
-    <main class="cards-container">
-      <!-- <div class="challenge-card">
-        <div class="challenge-card-item">
-        
-        </div>
-      </div> -->
+    <main class="main">
+      <div id="loader" class="loader hidden"></div>
+      <div class="cards-container"></div>
     </main>
+    <footer class="footer">
+      <nav>
+        <ul class="footer-menu">
+          <li><a href="">Blog</a></li>
+          <li><a href="">Privacy</a></li>
+          <li><a href="">Contact</a></li>
+          <li><a href="">Terms</a></li>
+          <li><a href="">For Employers</a></li>
+        </ul>
+      </nav>
+    </footer>
     <script src="../static/app.js"></script>
   </body>
 </html>
