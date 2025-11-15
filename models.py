@@ -8,6 +8,7 @@ user_roles = db.Table(
     db.Column("role_id", db.Integer, db.ForeignKey("roles.id"))
 )
 
+# User model with password hashing and role relationship
 class User(db.Model):
     __tablename__ = "users"
 
@@ -23,7 +24,7 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-
+# --------- Role model ---------
 class Role(db.Model):
     __tablename__ = "roles"
 

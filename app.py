@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+import os
+from flask import Flask, request, jsonify, send_from_directory, g
 from db import db
 from models import User, Role
 from functools import wraps
@@ -10,6 +11,27 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
 app.config["SECRET_KEY"] = "secretkey"
 
 db.init_app(app)
+
+UPLOAD_FOLDER = "uploads"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+UPLOAD_ROOT = "uploads/participants"
+
+ALLOWED_TYPES = {
+    "json": [".json"],
+    "csv": [".csv"],
+    "models": [".onx", ".h5", ".pt", ".sav", '.pkl'],
+    "script": [".py", ".r", ".ipynb"]
+}
+
+def detect_file_category(filename):
+    extension = os.path.splitext(filename)[1].lower()
+
+    for category, ext_list in ALLOWED_TYPES.items():
+        if extension in ext_list:
+            return category
+
+    return None
 
 # ------------------ CREATING ROLES --------------------
 @app.before_first_request
@@ -33,6 +55,12 @@ def requires_role(role_name):
 
             try:
                 payload = jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])
+                # Set current user so endpoints can access g.current_user
+                g.current_user = User.query.get(payload["user_id"])
+
+                if not g.current_user:
+                    return jsonify({"message": "user not found"}), 404
+                # Check role
                 if role_name not in payload["roles"]:
                     return jsonify({"message": "forbidden"}), 403
             except Exception:
@@ -143,6 +171,48 @@ def get_reviews():
         })
     return jsonify(result)
 
+# Endpoint to list all files available to judges
+@app.route("/judge/files", methods=["GET"])
+@requires_role("judge")
+def judge_list_files():
+    """
+    Return list of all files available to judges in uploads folder.
+    """
+
+    file_list = []
+    for root, dirs, files in os.walk(UPLOAD_FOLDER):
+        for f in files:
+            full_path = os.path.join(root, f)
+            relative_path = os.path.relpath(full_path, UPLOAD_FOLDER)
+            file_list.append(relative_path)
+
+    return jsonify({"files": file_list})
+
+
+# Endpoint to download a file associated with a submission
+@app.route("/judge/files/<path:filename>", methods=["GET"])
+@requires_role("judge")
+def judge_download_file(filename):
+    """
+    Allow judge to download a file from the uploads folder.
+    """
+
+    # Full safe path
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+
+    # Check if file exists
+    if not os.path.isfile(file_path):
+        return jsonify({"error": "File not found"}), 404
+
+    # Determine directory & filename separately
+    directory, file = os.path.split(file_path)
+
+    return send_from_directory(
+        directory,
+        file,
+        as_attachment=True
+    )
+
 
 # POST /judge/grade
 # Allows a judge to submit a grade and optional comment for a participant's submission
@@ -197,6 +267,49 @@ def participant_panel():
         "user_id": user.id,
         "email": user.email,
         "submissions": submissions
+    })
+
+# ENDPOINT TO UPLOAD FILES
+@app.route("/participant/upload", methods=["POST"])
+@requires_role("participant")
+def participant_upload_file():
+    """
+    Upload endpoint for participant.
+    Creates folder structure:
+    uploads/participants/<user_id>/(json|csv|models|scripts)
+    """
+
+    if "file" not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files["file"]
+
+    if file.filename == "":
+        return jsonify({"error": "No selected file"}), 400
+
+    # Determine file category
+    category = detect_file_category(file.filename)
+    if not category:
+        return jsonify({"error": "Unsupported file type"}), 400
+
+    user_id = g.current_user.id
+
+    # Build path: uploads/participants/<id>/<category>/
+    user_root = os.path.join(UPLOAD_ROOT, str(user_id))
+    target_folder = os.path.join(user_root, category)
+
+    # Create folders if missing
+    os.makedirs(target_folder, exist_ok=True)
+
+    # Save file inside category folder
+    save_path = os.path.join(target_folder, file.filename)
+    file.save(save_path)
+
+    return jsonify({
+        "message": "File uploaded successfully",
+        "file_category": category,
+        "filename": file.filename,
+        "saved_to": f"participants/{user_id}/{category}/{file.filename}"
     })
 
 
