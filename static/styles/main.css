@@ -32,7 +32,8 @@ html {
 .nav-bar {
   display: flex;
   justify-content: center;
-  gap: 6rem;
+  align-items: center;
+  gap: 5rem;
 
   margin-block-start: 4rem;
   margin-block-end: 4rem;
@@ -42,6 +43,72 @@ html {
   padding: 0.625rem;
   background-color: #eee;
   border-radius: 1.5rem;
+}
+
+
+.nav-btn {
+  background-color: #a9adae;
+  color: #fff;
+  padding: 0.625rem;
+  padding-inline: 1.5626rem;
+  border-radius: 1.5rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+
+.login-card {
+  position: absolute;
+  top: 60px; 
+  right: 20px;
+  width: 300px;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+
+.login-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.login-card.hidden {
+  display: none;
+}
+
+
+.login-card input {
+  width: 100%;
+  padding: 0.4rem;
+  margin: 0.5rem 0 1rem 0;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
+}
+
+
+.login-submit {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #a9adae;
+  color: #fff;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+
+.login-error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
 }
 
 .main-container {

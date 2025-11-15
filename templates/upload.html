@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Upload Challenge Submission</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+
+    <style>
+      /* ---------- GLOBAL LAYOUT (Sticky Footer) ---------- */
+      html, body {
+          height: 100%;
+          margin: 0;
+      }
+
+      body {
+          display: flex;
+          flex-direction: column;
+          font-family: Arial, sans-serif;
+      }
+
+      main {
+          flex: 1;
+          padding: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+      }
+
+      /* ---------- HEADER ---------- */
+      ul, ol {
+          list-style: none;
+      }
+
+      a {
+          text-decoration: none;
+          color: black;
+      }
+
+      .header {
+          display: flex;
+          align-items: center;
+          gap: 5rem;
+          padding: 20px 30px;
+      }
+
+      .logo img {
+          width: 11rem;
+          height: 9rem;
+      }
+
+      .nav-bar {
+          display: flex;
+          gap: 6rem;
+      }
+
+      .nav-bar a {
+          padding: 0.625rem;
+          background-color: #eee;
+          border-radius: 1.5rem;
+      }
+
+      /* ---------- UPLOAD CARD ---------- */
+      .upload-card {
+          width: 450px;
+          background: #fff;
+          padding: 25px;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+
+      .upload-card h2 {
+          text-align: center;
+          margin-bottom: 15px;
+      }
+
+      .upload-card ul {
+          padding-left: 20px;
+          margin-bottom: 20px;
+      }
+
+      .upload-card label {
+          font-weight: bold;
+          margin-bottom: 5px;
+          display: block;
+      }
+
+      .upload-card input[type="file"] {
+          margin-bottom: 15px;
+      }
+
+      .upload-card button {
+          width: 100%;
+          padding: 12px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 16px;
+      }
+
+      .error {
+          color: red;
+          margin-bottom: 10px;
+      }
+
+      .success {
+          color: green;
+          margin-bottom: 10px;
+      }
+
+      /* ---------- FOOTER ---------- */
+      .footer {
+          background-color: #595c5d;
+          padding: 2rem 0;
+      }
+
+      .footer-menu {
+          display: flex;
+          justify-content: center;
+          gap: 6rem;
+      }
+
+      .footer-menu a {
+          color: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ---------- HEADER ---------- -->
+    <header class="header">
+      <div class="logo">
+        <a href="{{ url_for('render_index') }}">
+          <img
+            src="../static/assets/9a16bdc968115f58668f35dd4bf26158.jpg"
+            alt="Hackathon logo"
+          />
+        </a>
+      </div>
+
+      <nav>
+        <ul class="nav-bar">
+          <li><a href="{{ url_for('render_index') }}">Home</a></li>
+          <li><a href="">Find collaborators</a></li>
+          <li><a href="">Hackathon schedule</a></li>
+          <li><a href="">FAQ</a></li>
+          <li><a href="">Write a feedback</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- ---------- MAIN CONTENT ---------- -->
+    <main>
+      <div class="upload-card">
+        <h2>Submit Your Solution</h2>
+
+        <p>Select a valid file format for data modeling challenges:</p>
+
+        <ul>
+          <li>Jupyter Notebook (.ipynb)</li>
+          <li>Python Script (.py)</li>
+          <li>ZIP Project (.zip)</li>
+          <li>Model file (.pkl, .sav, .joblib)</li>
+          <li>CSV predictions (.csv)</li>
+        </ul>
+
+        <div id="message"></div>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+          <label for="file">Upload file:</label>
+          <input
+            type="file"
+            id="file"
+            name="file"
+            accept=".ipynb,.py,.zip,.pkl,.sav,.joblib,.csv"
+            required
+          />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </main>
+
+    <!-- ---------- FOOTER ---------- -->
+    <footer class="footer">
+      <nav>
+        <ul class="footer-menu">
+          <li><a href="">Blog</a></li>
+          <li><a href="">Privacy</a></li>
+          <li><a href="">Contact</a></li>
+          <li><a href="">Terms</a></li>
+          <li><a href="">For Employers</a></li>
+        </ul>
+      </nav>
+    </footer>
+
+    <!-- ---------- JS UPLOAD VALIDATION ---------- -->
+    <script>
+      const uploadForm = document.getElementById("uploadForm");
+      const message = document.getElementById("message");
+
+      uploadForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const file = document.getElementById("file").files[0];
+
+          if (!file) {
+              message.innerHTML = `<p class="error">Please select a file.</p>`;
+              return;
+          }
+
+          const allowed = ["ipynb", "py", "zip", "pkl", "sav", "joblib", "csv"];
+          const ext = file.name.split('.').pop().toLowerCase();
+
+          if (!allowed.includes(ext)) {
+              message.innerHTML = `<p class="error">Invalid file type. Allowed: ${allowed.join(', ')}</p>`;
+              return;
+          }
+
+          message.innerHTML = `<p class="success">File validated! (backend upload coming soon)</p>`;
+      });
+    </script>
+  </body>
+</html>
