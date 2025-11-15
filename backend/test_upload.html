@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Test File Upload</h2>
+
+  <form action="http://127.0.0.1:5000/api/submit" method="post" enctype="multipart/form-data">
+    <label>Challenge ID:</label>
+    <input type="text" name="challenge_id" value="house_price"><br><br>
+
+    <label>User ID:</label>
+    <input type="text" name="user_id" value="eva"><br><br>
+
+    <label>File:</label>
+    <input type="file" name="file"><br><br>
+
+    <button type="submit">Upload</button>
+  </form>
+
+</body>
+</html>
