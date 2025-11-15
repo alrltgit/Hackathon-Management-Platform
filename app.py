@@ -34,14 +34,14 @@ def detect_file_category(filename):
     return None
 
 # ------------------ CREATING ROLES --------------------
-@app.before_first_request
-def create_default_roles():
-    existing = Role.query.all()
-    if not existing:
-        roles = ["participant", "admin", "judge"]
-        for r in roles:
-            db.session.add(Role(name=r))
-        db.session.commit()
+# @app.before_first_request
+# def create_default_roles():
+#     existing = Role.query.all()
+#     if not existing:
+#         roles = ["participant", "admin", "judge"]
+#         for r in roles:
+#             db.session.add(Role(name=r))
+#         db.session.commit()
 
 # ---------------- ROLE PROTECTED ENDPOINT ----------------
 def requires_role(role_name):
@@ -375,7 +375,7 @@ def login():
             },
             app.config["SECRET_KEY"],
             algorithm="HS256"
-        ).decode("utf-8")
+        )
         return jsonify({"token": token})
     else:
         return jsonify({"message": "wrong credentials"}), 401
@@ -384,4 +384,12 @@ def login():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+
+         # create default roles once
+        existing = Role.query.all()
+        if not existing:
+            roles = ["participant", "admin", "judge"]
+            for r in roles:
+                db.session.add(Role(name=r))
+            db.session.commit()
     app.run(debug=True)
