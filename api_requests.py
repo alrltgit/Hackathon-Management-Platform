@@ -11,11 +11,10 @@ def render_index():
 @app.route('/api/challenges')
 def get_list_of_challenges():
     id_arr = [
-        "5208f99aee097e6552000148",
+        "6914c975e159c8f7e120cc84",
         "515de9ae9dcfc28eb6000001",
         "559a28007caad2ac4e000083",
         "556deca17c58da83c00002db",
-        "529adbf7533b761c560004e5",
         "522551eee9abb932420004a0",
         "558fc85d8fd1938afb000014",
         "5541f58a944b85ce6d00006a",
