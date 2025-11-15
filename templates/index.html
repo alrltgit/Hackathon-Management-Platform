@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../static/styles/main.css" />
+    <title>Hackathon Platform</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        <a href="{{ url_for('render_index') }}">
+          <img
+            src="../static/assets/9a16bdc968115f58668f35dd4bf26158.jpg"
+            alt="Hachathon logo"
+          />
+        </a>
+      </div>
+      <nav>
+        <ul class="nav-bar">
+          <li>
+            <a href="{{ url_for('render_index') }}">Home</a>
+          </li>
+          <li>
+            <a href="">Find collaborators</a>
+          </li>
+          <li>
+            <a href="">Hackathon schedule</a>
+          </li>
+          <li>
+            <a href="">FAQ</a>
+          </li>
+          <li>
+            <a href="">Write a feedback</a>
+          </li>
+          <li>
+            <button id="signInBtn" class="nav-btn">Sign In</button>
+          </li>
+        </ul>
+      </nav>
+      <div id="loginCard" class="login-card hidden">
+        <h3>Sign In</h3>
+        <form id="loginForm">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+          />
+
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+          />
+
+          <button type="submit" class="login-submit">Sign In</button>
+        </form>
+        <p id="loginError" class="login-error"></p>
+      </div>
+    </header>
+    <main>
+      <div class="main-container">
+        <h1>Select your challenge</h1>
+        <div class="card">
+          <h2>Showcase your skills</h2>
+          <div class="buttons">
+            <a href="{{ url_for('render_challenges') }}">List of challenges</a>
+            <a href="">Hackathon requirements</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="footer">
+      <nav>
+        <ul class="footer-menu">
+          <li><a href="">Blog</a></li>
+          <li><a href="">Privacy</a></li>
+          <li><a href="">Contact</a></li>
+          <li><a href="">Terms</a></li>
+          <li><a href="">For Employers</a></li>
+        </ul>
+      </nav>
+    </footer>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

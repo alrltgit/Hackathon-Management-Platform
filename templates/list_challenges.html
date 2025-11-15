@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/styles/challenges.css" />
+    <title>Challenges</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        <a href="{{ url_for('render_index') }}">
+          <img
+            src="../static/assets/9a16bdc968115f58668f35dd4bf26158.jpg"
+            alt="Hachathon logo"
+          />
+        </a>
+      </div>
+      <nav>
+        <ul class="nav-bar">
+          <li>
+            <a href="{{ url_for('render_index') }}">Home</a>
+          </li>
+          <li>
+            <a href="">Find collaborators</a>
+          </li>
+          <li>
+            <a href="">Hackathon schedule</a>
+          </li>
+          <li>
+            <a href="">FAQ</a>
+          </li>
+          <li>
+            <a href="">Write a feedback</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+      <div id="loader" class="loader hidden"></div>
+      <div class="cards-container"></div>
+    </main>
+    <footer class="footer">
+      <nav>
+        <ul class="footer-menu">
+          <li><a href="">Blog</a></li>
+          <li><a href="">Privacy</a></li>
+          <li><a href="">Contact</a></li>
+          <li><a href="">Terms</a></li>
+          <li><a href="">For Employers</a></li>
+        </ul>
+      </nav>
+    </footer>
+    <script src="../static/app.js"></script>
+  </body>
+</html>
